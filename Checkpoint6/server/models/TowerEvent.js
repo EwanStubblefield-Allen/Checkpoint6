@@ -36,7 +36,7 @@ export const TowerEventSchema = new Schema({
   },
   type: {
     type: String,
-    enum: ['concert', 'convention', 'sport', 'digital'],
+    enum: ['expo', 'convention', 'exhibit', 'sport', 'digital', 'concert'],
     required: true
   }
 }, {
