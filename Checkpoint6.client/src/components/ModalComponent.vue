@@ -3,13 +3,13 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5 text-dark" id="eventForm">
-            Create Event
+          <h1 class="modal-title fs-5 text-dark">
+            <slot name="title"></slot>
           </h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <CreateEvent />
+          <slot name="body"></slot>
         </div>
 
       </div>
@@ -18,13 +18,11 @@
 </template>
 
 <script>
-import CreateEvent from './CreateEvent.vue'
 
 export default {
   setup() {
     return {}
-  },
-  components: { CreateEvent }
+  }
 }
 </script>
 

@@ -8,9 +8,9 @@
           <p v-if="commentProp.isAttending" class="attending ps-3">Attending this event</p>
         </div>
 
-        <i @click="removeComment()" v-if="commentProp.creatorId == account.id" class="mdi mdi-trash-can text-danger selectable fs-5" title="Delete Comment"></i>
+        <i @click="removeComment()" v-if="commentProp.creatorId == account.id && !activeEvent.isCanceled" class="mdi mdi-trash-can text-danger selectable fs-5" title="Delete Comment"></i>
       </div>
-      <p>{{ commentProp.body }}</p>
+      <p class="text-break">{{ commentProp.body }}</p>
     </div>
   </div>
 </template>
@@ -33,6 +33,7 @@ export default {
   setup(props) {
     return {
       account: computed(() => AppState.account),
+      activeEvent: computed(() => AppState.activeEvent),
 
       async removeComment() {
         try {

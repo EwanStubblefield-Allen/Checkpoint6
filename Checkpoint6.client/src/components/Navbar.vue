@@ -14,9 +14,12 @@
           <router-link :to="{ name: 'Home' }" class="btn text-success lighten-30 selectable text-uppercase mx-2">
             Home
           </router-link>
+          <router-link v-if="account.id" :to="{ name: 'Account' }" class="btn text-success lighten-30 selectable text-uppercase mx-2">
+            Account
+          </router-link>
         </li>
         <li>
-          <button v-if="account.id" class="btn btn-success text-dark text-uppercase mt-3 mt-lg-0 mx-2" type="button" data-bs-toggle="modal" data-bs-target="#eventForm">New Event</button>
+          <button @click="isEditing()" v-if="account.id" class="btn bg-btn btn-success text-dark text-uppercase mt-3 mt-lg-0 mx-2" type="button" data-bs-toggle="modal" data-bs-target="#eventForm">New Event</button>
         </li>
       </ul>
       <!-- LOGIN COMPONENT HERE -->
@@ -33,7 +36,11 @@ import Login from './Login.vue'
 export default {
   setup() {
     return {
-      account: computed(() => AppState.account)
+      account: computed(() => AppState.account),
+
+      isEditing() {
+        AppState.isEditing = false
+      }
     }
   },
   components: { Login }

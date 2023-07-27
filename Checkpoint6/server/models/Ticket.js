@@ -29,3 +29,5 @@ TicketSchema.virtual('event', {
   justOne: true,
   ref: 'TowerEvent'
 })
+
+TicketSchema.index({ eventId: 1, accountId: 1 }, { unique: true })

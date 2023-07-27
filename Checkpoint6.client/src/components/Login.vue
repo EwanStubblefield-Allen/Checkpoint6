@@ -5,7 +5,7 @@
     </button>
     <div v-else>
       <div class="dropdown my-2 my-lg-0">
-        <div type="button" class="bg-dark border-0 selectable no-select" data-bs-toggle="dropdown" aria-expanded="false">
+        <div type="button" class="border-0 selectable no-select mx-2" data-bs-toggle="dropdown" aria-expanded="false">
           <div v-if="account.picture || user.picture">
             <img :src="account.picture || user.picture" alt="account photo" height="40" class="rounded" />
           </div>

@@ -11,7 +11,7 @@
 
           <div class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="authDropdown">
             <div class="list-group text-center">
-              <div class="list-group-item dropdown-item list-group-item-action">
+              <div @click="isEditing()" class="list-group-item dropdown-item list-group-item-action selectable" data-bs-toggle="modal" data-bs-target="#editForm">
                 <p>edit event</p>
               </div>
 
@@ -38,7 +38,7 @@
               <p class="sub-text">starting at {{ activeEvent.startDate.toLocaleTimeString() }}</p>
             </div>
 
-            <div class="pe-3 pb-2">
+            <div class="pe-3 pb-2 text-break">
               <p>{{ activeEvent.description }}</p>
             </div>
           </div>
@@ -54,20 +54,20 @@
               spots left
             </p>
 
-            <button @click="login" v-if="!account.id" type="button" class="btn btn-danger py-2 px-4">
-              Login to attend
-              <i class="mdi mdi-human ps-2"></i>
-            </button>
-            <button @click="removeAttendee()" v-else-if="isAttending" type="button" class="no-btn btn btn-danger py-2 px-4">
+            <button @click="removeAttendee()" v-if="isAttending" type="button" class="no-btn btn btn-danger py-2 px-4">
               Not going
               <i class="mdi mdi-human ps-2"></i>
             </button>
-            <button @click="createAttendee()" v-else-if="activeEvent.remainingTickets" type="button" class="attend-btn btn btn-warning py-2 px-4">
-              Attend
+            <button v-else-if="!activeEvent.remainingTickets" type="button" class="no-btn btn btn-danger py-2 px-4">
+              No spots left
               <i class="mdi mdi-human ps-2"></i>
             </button>
-            <button v-else type="button" class="no-btn btn btn-danger py-2 px-4">
-              No spots left
+            <button @click="login" v-else-if="!account.id" type="button" class="no-btn btn btn-danger py-2 px-4">
+              Login to attend
+              <i class="mdi mdi-human ps-2"></i>
+            </button>
+            <button @click="createAttendee()" v-else type="button" class="attend-btn btn btn-warning py-2 px-4">
+              Attend
               <i class="mdi mdi-human ps-2"></i>
             </button>
           </div>
@@ -130,6 +130,10 @@ export default {
         } catch (error) {
           Pop.error(error.message, '[DELETING ATTENDEE]')
         }
+      },
+
+      isEditing() {
+        AppState.isEditing = true
       }
     }
   }
@@ -170,10 +174,5 @@ export default {
   .attend-btn {
     border-radius: 3px;
     background: #FFD464;
-  }
-
-  .no-btn {
-    border-radius: 3px;
-    background: #FF5977;
   }
 </style>

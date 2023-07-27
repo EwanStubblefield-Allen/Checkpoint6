@@ -1,5 +1,5 @@
 <template>
-  <div class="p-1 event-card">
+  <div class="p-1 event-card card-height">
     <div class="d-flex align-items-end img-bg">
       <div class="d-flex flex-column justify-content-between card-text">
         <div class="p-2">
@@ -51,13 +51,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .event-card {
-    height: 40vh;
-    border-radius: 3px;
-    background: var(--t-2-dark-lighten, #474C61);
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  }
-
   .img-bg {
     height: 100%;
     border-radius: 3px;
@@ -79,5 +72,9 @@ export default {
   .no-ticket {
     border-radius: 3px;
     background: #FF5977;
+  }
+
+  .card-height {
+    height: 40vh;
   }
 </style>

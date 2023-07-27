@@ -1,8 +1,8 @@
 import { AppState } from "../AppState.js"
 import { Attendee } from "../models/Attendee.js"
+import Pop from "../utils/Pop.js"
 import { api } from "./AxiosService.js"
 import { commentsService } from "./CommentsService.js"
-import Pop from "../utils/Pop.js"
 
 class AttendeesService {
   async getMyAttendings() {
@@ -28,16 +28,24 @@ class AttendeesService {
   }
 
   async removeAttendee(attendeeId) {
-    await api.delete(`api/tickets/${attendeeId}`)
-    AppState.activeEvent.remainingTickets++
-    commentsService.changeAttendeeCommentStatus()
-    AppState.attendees = AppState.attendees.filter(a => a.id != attendeeId)
+    const res = await api.delete(`api/tickets/${attendeeId}`)
+
+    if (AppState.activeEvent) {
+      AppState.activeEvent.remainingTickets++
+      commentsService.changeAttendeeCommentStatus()
+      AppState.attendees = AppState.attendees.filter(a => a.id != attendeeId)
+    }
+    const foundEvent = AppState.towerEvents.find(e => e.id == res.data.eventId)
+
+    if (foundEvent) {
+      foundEvent.remainingTickets++
+    }
     AppState.myAttendings = AppState.myAttendings.filter(a => a.id != attendeeId)
   }
 
   removeAllAttendees() {
     AppState.attendees = []
-    AppState.myAttendings = AppState.myAttendings.filter(a => a.eventId == AppState.activeEvent.id)
+    AppState.myAttendings = AppState.myAttendings.filter(a => a.eventId != AppState.activeEvent.id)
   }
 }
 

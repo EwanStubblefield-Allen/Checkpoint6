@@ -1,5 +1,6 @@
 import { dbContext } from "../db/DbContext.js"
 import { BadRequest, Forbidden } from "../utils/Errors.js"
+import { towerEventsService } from "./TowerEventsService.js"
 
 class TicketsService {
   async getTicketById(ticketId) {
@@ -21,8 +22,12 @@ class TicketsService {
   }
 
   async createTicket(ticketData) {
+    const foundEvent = await towerEventsService.getEventById(ticketData.eventId)
+    if (foundEvent.isCanceled) {
+      throw new BadRequest('[CANNOT CREATE A TICKET ON A CANCELED EVENT]')
+    }
     const ticket = await dbContext.Tickets.create(ticketData)
-    await ticket.populate('profile', 'name picture')
+    await (await ticket.populate('profile', 'name picture')).populate('event')
     return ticket
   }
 

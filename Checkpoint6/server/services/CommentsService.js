@@ -1,6 +1,7 @@
 import { dbContext } from "../db/DbContext.js"
 import { BadRequest, Forbidden } from "../utils/Errors.js"
 import { ticketsService } from "./TicketsService.js"
+import { towerEventsService } from "./TowerEventsService.js"
 
 class CommentsService {
   async getCommentById(commentId) {
@@ -17,6 +18,10 @@ class CommentsService {
   }
 
   async createComment(commentData) {
+    const foundEvent = await towerEventsService.getEventById(commentData.eventId)
+    if (foundEvent.isCanceled) {
+      throw new BadRequest('[CANNOT CREATE A COMMENT ON A CANCELED EVENT]')
+    }
     const comment = await dbContext.Comments.create(commentData)
     await comment.populate('creator', 'name picture')
     return comment

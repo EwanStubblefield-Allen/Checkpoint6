@@ -22,6 +22,12 @@ class TowerEventsService {
     return newEventData
   }
 
+  async editEvent(eventData) {
+    const eventId = AppState.activeEvent.id
+    const res = await api.put(`api/events/${eventId}`, eventData)
+    AppState.activeEvent = new TowerEvent(res.data)
+  }
+
   async cancelEvent() {
     await api.delete(`api/events/${AppState.activeEvent.id}`)
     AppState.activeEvent.isCanceled = true
