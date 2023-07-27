@@ -3,7 +3,7 @@ import { BadRequest, Forbidden } from "../utils/Errors.js"
 
 class TicketsService {
   async getTicketById(ticketId) {
-    const ticket = await dbContext.Tickets.findById(ticketId).populate('profile event', 'name picture')
+    const ticket = await dbContext.Tickets.findById(ticketId).populate('profile', 'name picture').populate('event')
     if (!ticket) {
       throw new BadRequest(`[THE TICKET DOES NOT EXIST WITH THE ID: ${ticketId}]`)
     }
@@ -11,7 +11,7 @@ class TicketsService {
   }
 
   async getMyTickets(userId) {
-    const tickets = await dbContext.Tickets.find({ accountId: userId }).populate('event')
+    const tickets = await dbContext.Tickets.find({ accountId: userId }).populate('profile', 'name picture').populate('event')
     return tickets
   }
 
@@ -33,6 +33,11 @@ class TicketsService {
     }
     await foundTicket.remove()
     return foundTicket
+  }
+
+  async removeTicketsByEventId(eventId) {
+    const foundTickets = await this.getTicketsByEventId(eventId)
+    foundTickets.forEach(async t => await t.remove())
   }
 }
 

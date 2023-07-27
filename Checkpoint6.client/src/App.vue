@@ -11,33 +11,19 @@
 </template>
 
 <script>
-  import { computed, onMounted } from 'vue'
-  import { AppState } from './AppState'
-  import { towerEventsService } from './services/TowerEventsService.js'
-  import Navbar from './components/Navbar.vue'
-  import ModalComponent from './components/ModalComponent.vue'
-  import Pop from './utils/Pop.js'
+import { computed } from 'vue'
+import { AppState } from './AppState'
+import Navbar from './components/Navbar.vue'
+import ModalComponent from './components/ModalComponent.vue'
 
-  export default {
-    setup() {
-      onMounted(() => {
-        getEvents()
-      })
-
-      async function getEvents() {
-        try {
-          await towerEventsService.getEvents()
-        } catch (error) {
-          Pop.error(error.message, '[GETTING EVENTS]')
-        }
-      }
-
-      return {
-        appState: computed(() => AppState)
-      }
-    },
-    components: { Navbar, ModalComponent }
-  }
+export default {
+  setup() {
+    return {
+      appState: computed(() => AppState)
+    }
+  },
+  components: { Navbar, ModalComponent }
+}
 </script>
 <style lang="scss">
   @import "./assets/scss/main.scss";

@@ -1,4 +1,4 @@
-import { AppState } from "../AppState.js"
+import { Account } from "./Account.js"
 
 export class TowerEvent {
   constructor(data) {
@@ -14,7 +14,7 @@ export class TowerEvent {
     this.type = data.type
     this.createdAt = data.createdAt
     this.updatedAt = data.updatedAt
-    this.creator = data.creator
+    this.creator = new Account(data.creator)
     this.ticketCount = data.ticketCount
     this.remainingTickets = this.computedTickets
   }

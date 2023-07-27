@@ -1,6 +1,8 @@
 import { AppState } from "../AppState.js"
 import { TowerEvent } from "../models/TowerEvent.js"
+import { attendeesService } from "./AttendeesService.js"
 import { api } from "./AxiosService.js"
+import { commentsService } from "./CommentsService.js"
 
 class TowerEventsService {
   async getEvents() {
@@ -15,7 +17,16 @@ class TowerEventsService {
 
   async createEvent(eventData) {
     const res = await api.post('api/events', eventData)
-    AppState.towerEvents.push(new TowerEvent(res.data))
+    const newEventData = new TowerEvent(res.data)
+    AppState.towerEvents.push(newEventData)
+    return newEventData
+  }
+
+  async cancelEvent() {
+    await api.delete(`api/events/${AppState.activeEvent.id}`)
+    AppState.activeEvent.isCanceled = true
+    attendeesService.removeAllAttendees()
+    commentsService.removeAllCommentAttendance()
   }
 
   resetData() {

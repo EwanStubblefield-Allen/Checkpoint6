@@ -3,12 +3,11 @@
     <div class="img-bg">
       <div class="row text-bg py-2">
         <div class="col-12 d-flex justify-content-end dropdown  py-2 py-md-0">
-          <div v-if="activeEvent.creatorId == account.id" type="button" class="selectable no-select" data-bs-toggle="dropdown" aria-expanded="false">
+          <div v-if="activeEvent.creatorId == account.id && !activeEvent.isCanceled" type="button" class="selectable no-select" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="d-flex justify-content-center align-items-center mdi mdi-dots-horizontal info fs-3"></i>
           </div>
 
           <div v-else class="info"></div>
-
 
           <div class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="authDropdown">
             <div class="list-group text-center">
@@ -16,7 +15,7 @@
                 <p>edit event</p>
               </div>
 
-              <div class="list-group-item dropdown-item list-group-item-action text-danger selectable">
+              <div @click="cancelEvent()" class="list-group-item dropdown-item list-group-item-action text-danger selectable">
                 <p>cancel event</p>
               </div>
             </div>
@@ -44,7 +43,7 @@
             </div>
           </div>
 
-          <div class="d-flex justify-content-between align-items-center pe-3">
+          <div v-if="!activeEvent.isCanceled" class="d-flex justify-content-between align-items-center pe-3">
             <p>
               <span v-if="activeEvent.remainingTickets > 0" class="remaining fw-bold fs-5">
                 {{ activeEvent.remainingTickets }}
@@ -55,19 +54,26 @@
               spots left
             </p>
 
-
-            <button v-if="!account.id" type="button" class="btn btn-danger py-2 px-4">
+            <button @click="login" v-if="!account.id" type="button" class="btn btn-danger py-2 px-4">
               Login to attend
+              <i class="mdi mdi-human ps-2"></i>
+            </button>
+            <button @click="removeAttendee()" v-else-if="isAttending" type="button" class="no-btn btn btn-danger py-2 px-4">
+              Not going
               <i class="mdi mdi-human ps-2"></i>
             </button>
             <button @click="createAttendee()" v-else-if="activeEvent.remainingTickets" type="button" class="attend-btn btn btn-warning py-2 px-4">
               Attend
               <i class="mdi mdi-human ps-2"></i>
             </button>
-            <button v-else type="button" class="btn btn-danger py-2 px-4">
+            <button v-else type="button" class="no-btn btn btn-danger py-2 px-4">
               No spots left
               <i class="mdi mdi-human ps-2"></i>
             </button>
+          </div>
+
+          <div v-else class="no-btn text-dark text-center py-1">
+            <p>Event is canceled</p>
           </div>
         </div>
 
@@ -78,35 +84,64 @@
 </template>
 
 <script>
-  import { AppState } from '../AppState.js'
-  import { computed } from 'vue'
-  import Pop from '../utils/Pop.js'
-  import { attendeesService } from '../services/AttendeesService.js'
+import { AppState } from '../AppState.js'
+import { computed } from 'vue'
+import { AuthService } from '../services/AuthService.js'
+import { attendeesService } from '../services/AttendeesService.js'
+import { towerEventsService } from '../services/TowerEventsService.js'
+import Pop from '../utils/Pop.js'
 
-  export default {
-    setup() {
-      return {
-        activeEvent: computed(() => AppState.activeEvent),
-        backgroundImg: computed(() => `url(${AppState.activeEvent?.coverImg})`),
-        account: computed(() => AppState.account),
+export default {
+  setup() {
+    return {
+      activeEvent: computed(() => AppState.activeEvent),
+      backgroundImg: computed(() => `url(${AppState.activeEvent?.coverImg})`),
+      account: computed(() => AppState.account),
+      isAttending: computed(() => AppState.myAttendings.find(a => a.eventId == AppState.activeEvent.id)),
 
-        async createAttendee() {
-          try {
-            await attendeesService.createAttendee()
-          } catch (error) {
-            Pop.error(error.message, '[CREATING ATTENDEE]')
+      async login() {
+        AuthService.loginWithPopup()
+      },
+
+      async cancelEvent() {
+        try {
+          const isSure = await Pop.confirm(`Are you sure you want to cancel ${this.activeEvent.name}?`)
+
+          if (!isSure) {
+            return
           }
+          await towerEventsService.cancelEvent()
+        } catch (error) {
+          Pop.error(error.message, '[CANCELING EVENT]')
+        }
+      },
+
+      async createAttendee() {
+        try {
+          await attendeesService.createAttendee()
+        } catch (error) {
+          Pop.error(error.message, '[CREATING ATTENDEE]')
+        }
+      },
+
+      async removeAttendee() {
+        try {
+          await attendeesService.removeAttendee(this.isAttending.id)
+        } catch (error) {
+          Pop.error(error.message, '[DELETING ATTENDEE]')
         }
       }
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
   img {
     height: 100%;
+    object-position: center;
+    object-fit: cover;
   }
-
 
   .img-bg {
     border-radius: 3px;
@@ -139,6 +174,6 @@
 
   .no-btn {
     border-radius: 3px;
-    background: var(--t-2-warning, #FFD464);
+    background: #FF5977;
   }
 </style>

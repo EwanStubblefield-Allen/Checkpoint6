@@ -32,33 +32,35 @@
 </template>
 
 <script>
-  import { ref } from 'vue';
-  import Pop from '../utils/Pop.js';
-  import { towerEventsService } from '../services/TowerEventsService.js';
-  import { Modal } from 'bootstrap';
+import { ref } from 'vue'
+import Pop from '../utils/Pop.js'
+import { towerEventsService } from '../services/TowerEventsService.js'
+import { Modal } from 'bootstrap'
+import { useRouter } from 'vue-router'
 
+export default {
+  setup() {
+    const router = useRouter()
+    const editable = ref({})
+    const options = ['expo', 'convention', 'exhibit', 'sport', 'digital', 'concert']
 
-  export default {
-    setup() {
-      const editable = ref({})
-      const options = ['expo', 'convention', 'exhibit', 'sport', 'digital', 'concert']
+    return {
+      editable,
+      options,
 
-      return {
-        editable,
-        options,
-
-        async createEvent() {
-          try {
-            await towerEventsService.createEvent(editable.value)
-            editable.value = {}
-            Modal.getOrCreateInstance('#eventForm').hide()
-          } catch (error) {
-            Pop.error(error.message, '[CREATING EVENT]')
-          }
+      async createEvent() {
+        try {
+          const eventData = await towerEventsService.createEvent(editable.value)
+          editable.value = {}
+          Modal.getOrCreateInstance('#eventForm').hide()
+          router.push({ name: 'EventDetails', params: { eventId: eventData.id } })
+        } catch (error) {
+          Pop.error(error.message, '[CREATING EVENT]')
         }
       }
     }
   }
+}
 </script>
 
 <style lang="scss" scoped></style>

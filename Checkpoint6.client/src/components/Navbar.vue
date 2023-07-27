@@ -26,18 +26,18 @@
 </template>
 
 <script>
-  import { computed } from 'vue';
-  import { AppState } from '../AppState.js';
-  import Login from './Login.vue';
+import { computed } from 'vue'
+import { AppState } from '../AppState.js'
+import Login from './Login.vue'
 
-  export default {
-    setup() {
-      return {
-        account: computed(() => AppState.account)
-      }
-    },
-    components: { Login }
-  }
+export default {
+  setup() {
+    return {
+      account: computed(() => AppState.account)
+    }
+  },
+  components: { Login }
+}
 </script>
 
 <style scoped>

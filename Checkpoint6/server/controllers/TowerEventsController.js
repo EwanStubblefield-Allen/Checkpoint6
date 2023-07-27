@@ -1,8 +1,8 @@
 import { Auth0Provider } from "@bcwdev/auth0provider";
 import { towerEventsService } from "../services/TowerEventsService.js";
-import BaseController from "../utils/BaseController.js";
 import { ticketsService } from "../services/TicketsService.js";
 import { commentsService } from "../services/CommentsService.js";
+import BaseController from "../utils/BaseController.js";
 
 export class TowerEventsController extends BaseController {
   constructor() {

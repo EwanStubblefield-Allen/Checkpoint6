@@ -7,7 +7,7 @@
           <p class="sub-text">{{ eventProp.location }}</p>
           <p class="sub-text">{{ eventProp.startDate.toLocaleDateString() }}</p>
         </div>
-        <div v-if="eventProp.isCanceled" class="text-center text-light no-ticket">
+        <div v-if="eventProp.isCanceled" class="text-center text-dark no-ticket">
           <p>Canceled</p>
         </div>
         <div v-else-if="eventProp.remainingTickets > 0" class="text-end text-light p-2">
@@ -18,7 +18,7 @@
             spots left
           </p>
         </div>
-        <div v-else class="text-center text-light no-ticket">
+        <div v-else class="text-center text-dark no-ticket">
           <p>At Capacity</p>
         </div>
       </div>
@@ -27,27 +27,27 @@
 </template>
 
 <script>
-  import { onMounted } from 'vue'
-  import { TowerEvent } from '../models/TowerEvent.js'
+import { onMounted } from 'vue'
+import { TowerEvent } from '../models/TowerEvent.js'
 
-  export default {
-    props: {
-      eventProp: {
-        type: TowerEvent,
-        required: true
-      }
-    },
+export default {
+  props: {
+    eventProp: {
+      type: TowerEvent,
+      required: true
+    }
+  },
 
-    setup(props) {
-      onMounted(() => {
+  setup(props) {
+    onMounted(() => {
 
-      })
+    })
 
-      return {
-        backgroundImg: `url(${props.eventProp.coverImg})`
-      }
+    return {
+      backgroundImg: `url(${props.eventProp.coverImg})`
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

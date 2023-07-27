@@ -20,9 +20,9 @@
             <div class="text-end green">
               Join the conversation
             </div>
-            <form @submit.prevent="">
+            <form @submit.prevent="createComment()">
               <div class="pt-2">
-                <textarea class="form-control" name="comment" id="comment" rows="5" placeholder="Tell the people..."></textarea>
+                <textarea v-model="editable.body" class="form-control" name="comment" id="comment" rows="5" placeholder="Tell the people..."></textarea>
                 <label for="#comment"></label>
               </div>
               <div class="text-end">
@@ -45,64 +45,75 @@
 </template>
 
 <script>
-  import { useRoute } from 'vue-router'
-  import { AppState } from '../AppState.js'
-  import { computed, onMounted, onUnmounted } from 'vue'
-  import { towerEventsService } from '../services/TowerEventsService.js'
-  import { attendeesService } from '../services/AttendeesService.js'
-  import { commentsService } from '../services/CommentsService.js'
-  import EventDetailsCard from '../components/EventDetailsCard.vue'
-  import CommentComponent from '../components/CommentComponent.vue'
-  import Pop from '../utils/Pop.js'
+import { useRoute } from 'vue-router'
+import { AppState } from '../AppState.js'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { towerEventsService } from '../services/TowerEventsService.js'
+import { attendeesService } from '../services/AttendeesService.js'
+import { commentsService } from '../services/CommentsService.js'
+import EventDetailsCard from '../components/EventDetailsCard.vue'
+import CommentComponent from '../components/CommentComponent.vue'
+import Pop from '../utils/Pop.js'
 
-  export default {
-    setup() {
-      const route = useRoute()
+export default {
+  setup() {
+    const route = useRoute()
+    const editable = ref({})
 
-      onMounted(() => {
-        getEventById()
-        getAttendeesByEventId()
+    onMounted(() => {
+      getEventById()
+      getAttendeesByEventId()
+    })
+
+    onUnmounted(() => {
+      towerEventsService.resetData()
+    })
+
+    async function getEventById() {
+      try {
+        await towerEventsService.getEventById(route.params.eventId)
+      }
+      catch (error) {
+        Pop.error(error.message, "[GETTING EVENT BY ID]")
+      }
+    }
+
+    async function getAttendeesByEventId() {
+      try {
+        await attendeesService.getAttendeesByEventId(route.params.eventId)
         getCommentsByEventId()
-      })
-
-      onUnmounted(() => {
-        towerEventsService.resetData()
-      })
-
-      async function getEventById() {
-        try {
-          await towerEventsService.getEventById(route.params.eventId);
-        }
-        catch (error) {
-          Pop.error(error.message, "[GETTING EVENT BY ID]");
-        }
+      } catch (error) {
+        Pop.error(error.message, '[GETTING ATTENDEES BY EVENT ID]')
       }
+    }
 
-      async function getAttendeesByEventId() {
+    async function getCommentsByEventId() {
+      try {
+        await commentsService.getCommentsByEventId(route.params.eventId)
+      } catch (error) {
+        Pop.error(error.message, '[GETTING COMMENTS BY EVENT ID]')
+      }
+    }
+
+    return {
+      editable,
+      activeEvent: computed(() => AppState.activeEvent),
+      account: computed(() => AppState.account),
+      attendees: computed(() => AppState.attendees),
+      comments: computed(() => AppState.comments),
+
+      async createComment() {
         try {
-          await attendeesService.getAttendeesByEventId(route.params.eventId)
+          await commentsService.createComment(editable.value)
+          editable.value = {}
         } catch (error) {
-          Pop.error(error.message, '[GETTING ATTENDEES BY EVENT ID]')
+          Pop.error(error.message, '[CREATING COMMENT]')
         }
       }
-
-      async function getCommentsByEventId() {
-        try {
-          await commentsService.getCommentsByEventId(route.params.eventId)
-        } catch (error) {
-          Pop.error(error.message, '[GETTING COMMENTS BY EVENT ID]')
-        }
-      }
-
-      return {
-        activeEvent: computed(() => AppState.activeEvent),
-        account: computed(() => AppState.account),
-        attendees: computed(() => AppState.attendees),
-        comments: computed(() => AppState.comments)
-      };
-    },
-    components: { EventDetailsCard, CommentComponent }
-  }
+    }
+  },
+  components: { EventDetailsCard, CommentComponent }
+}
 </script>
 
 <style lang="scss" scoped>

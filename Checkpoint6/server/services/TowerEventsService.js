@@ -1,5 +1,6 @@
 import { dbContext } from "../db/DbContext.js"
 import { BadRequest, Forbidden } from "../utils/Errors.js"
+import { ticketsService } from "./TicketsService.js"
 
 class TowerEventsService {
   async getEvents() {
@@ -36,6 +37,7 @@ class TowerEventsService {
     const foundEvent = await this.checkInfo(eventId, userId)
     foundEvent.isCanceled = true
     await foundEvent.save()
+    await ticketsService.removeTicketsByEventId(eventId)
     return foundEvent
   }
 

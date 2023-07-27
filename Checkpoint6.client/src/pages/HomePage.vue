@@ -27,25 +27,40 @@
 </template>
 
 <script>
-  import { computed, ref } from 'vue';
-  import { AppState } from '../AppState.js';
-  import TowerEventCard from '../components/TowerEventCard.vue';
+import { computed, onMounted, ref } from 'vue'
+import { AppState } from '../AppState.js'
+import { towerEventsService } from '../services/TowerEventsService.js'
+import TowerEventCard from '../components/TowerEventCard.vue'
+import Pop from '../utils/Pop.js'
 
-  export default {
-    setup() {
-      const filter = ref("");
-      return {
-        filter,
-        towerEvents: computed(() => {
-          if (filter.value) {
-            return AppState.towerEvents.filter(t => t.type == filter.value)
-          }
-          return AppState.towerEvents
-        })
-      };
-    },
-    components: { TowerEventCard }
-  }
+export default {
+  setup() {
+    const filter = ref("")
+
+    onMounted(() => {
+      getEvents()
+    })
+
+    async function getEvents() {
+      try {
+        await towerEventsService.getEvents()
+      } catch (error) {
+        Pop.error(error.message, '[GETTING EVENTS]')
+      }
+    }
+
+    return {
+      filter,
+      towerEvents: computed(() => {
+        if (filter.value) {
+          return AppState.towerEvents.filter(t => t.type == filter.value)
+        }
+        return AppState.towerEvents
+      })
+    }
+  },
+  components: { TowerEventCard }
+}
 </script>
 
 <style scoped lang="scss">

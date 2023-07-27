@@ -5,6 +5,7 @@ import { router } from '../router'
 import { accountService } from './AccountService'
 import { api } from './AxiosService'
 import { socketService } from './SocketService'
+import { attendeesService } from './AttendeesService.js'
 
 export const AuthService = initialize({
   domain,
@@ -27,6 +28,7 @@ AuthService.on(AuthService.AUTH_EVENTS.AUTHENTICATED, async function() {
   await accountService.getAccount()
   socketService.authenticate(AuthService.bearer)
   // NOTE if there is something you want to do once the user is authenticated, place that here
+  attendeesService.getMyAttendings()
 })
 
 async function refreshAuthToken(config) {
@@ -34,6 +36,7 @@ async function refreshAuthToken(config) {
   const expires = AuthService.identity.exp * 1000
   const expired = expires < Date.now()
   const needsRefresh = expires < Date.now() + (1000 * 60 * 60 * 12)
+
   if (expired) {
     await AuthService.loginWithPopup()
   } else if (needsRefresh) {

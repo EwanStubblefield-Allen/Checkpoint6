@@ -18,14 +18,14 @@
 </template>
 
 <script>
-  import CreateEvent from './CreateEvent.vue'
+import CreateEvent from './CreateEvent.vue'
 
-  export default {
-    setup() {
-      return {};
-    },
-    components: { CreateEvent }
-  }
+export default {
+  setup() {
+    return {}
+  },
+  components: { CreateEvent }
+}
 </script>
 
 <style lang="scss" scoped></style>
