@@ -36,10 +36,10 @@ jobs:
 
       - name: Copy your code to the EC2📔
         run: |
-          sudo GLOBIGNORE='.git' scp -i ~/.ssh/id_rsa.pem -o StrictHostKeyChecking=no -r $GITHUB_WORKSPACE/* $EC2_USERNAME@$EC2_IP_ADDRESS:~/
+          sudo GLOBIGNORE='.git' scp -i ~/.ssh/id_rsa.pem -o StrictHostKeyChecking=no -r $GITHUB_WORKSPACE/* $EC2_USERNAME@$EC2_IP_ADDRESS:~/$ROOT
 
       - name: Restart the EC2 🔃
         run: |
           # Add any commands required to restart your application on the EC2 instance
           # Example: 
-          sudo ssh -i ~/.ssh/id_rsa.pem $EC2_USERNAME@$EC2_IP_ADDRESS "cd $ROOT && pnpm run build && sudo pm2 restart $ROOT"
+          sudo ssh -i ~/.ssh/id_rsa.pem $EC2_USERNAME@$EC2_IP_ADDRESS "cd $ROOT && pnpm run build && sudo pm2 restart tower"
