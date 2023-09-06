@@ -1,13 +1,14 @@
-
-  {
-    "name": "checkpoint6",
-    "version": "1.0.0",
-    "scripts": {
-      "build": "npm run setup:server",
-      "setup:app": "npm run setup:server && npm run setup:client",
-      "setup:client": "cd Checkpoint6.client && npm i",
-      "setup:server": "cd Checkpoint6 && npm i",
-      "start": "node Checkpoint6/index.js"
-    }
+{
+  "name": "checkpoint6",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npm run setup:server",
+    "setup:app": "npm run setup:server && npm run setup:client",
+    "setup:client": "cd Checkpoint6.client && npm i",
+    "setup:server": "cd Checkpoint6 && npm i",
+    "start": "node Checkpoint6/index.js"
+  },
+  "engines": {
+    "node": "^16"
   }
-  
+}
