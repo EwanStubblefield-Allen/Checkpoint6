@@ -1,0 +1,35 @@
+name: Deploy to EC2 ☁️
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build the Application 🤖 
+        run: |
+          # Add any commands required to install dependencies and build your application
+          # Example: npm install && npm run build
+
+      - name: Create your SSH Key 🔑
+        run: |
+          mkdir -p ~/.ssh
+          echo "$EC2_PEM_KEY" > ~/.ssh/id_rsa.pem
+          chmod 600 ~/.ssh/id_rsa.pem
+          ssh-keyscan -H $EC2_IP_ADDRESS >> ~/.ssh/known_hosts
+
+      - name: Copy your code to the EC2📔
+        run: |
+          scp -i ~/.ssh/id_rsa.pem -o StrictHostKeyChecking=no -r /path/to/your/application $EC2_USERNAME@$EC2_IP_ADDRESS:/path/to/destination
+
+      - name: Restart the EC2 🔃
+        run: |
+          # Add any commands required to restart your application on the EC2 instance
+          # Example: ssh -i ~/.ssh/id_rsa.pem $EC2_USERNAME@$EC2_IP_ADDRESS "sudo systemctl restart your-application-service && pm2 restart all"
