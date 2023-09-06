@@ -35,9 +35,10 @@ export function RegisterControllers(router) {
       if (ControllerClass.default) {
         ControllerClass = ControllerClass.default
       }
+      const routePrefix = process.env.ROUTE_PREFIX || ''
       const controller = new ControllerClass()
       if (controller instanceof BaseController) {
-        router.use(controller.mount, controller.router)
+        router.use(routePrefix + controller.mount, controller.router)
       }
     } catch (e) {
       logger.error(
@@ -54,7 +55,7 @@ const HANDLERS = []
 export async function RegisterSocketHandlers() {
   const directory = Paths.Handlers
   const handlers = fs.readdirSync(directory)
-  handlers.forEach(async(handlerName) => {
+  handlers.forEach(async (handlerName) => {
     try {
       if (!handlerName.endsWith('.js')) { return }
       const fileHandler = await import(directory + '/' + handlerName)
