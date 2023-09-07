@@ -30,10 +30,10 @@ jobs:
       - name: Cleanup 🧹
         run: |
           sudo ssh -i ~/.ssh/id_rsa.pem -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_IP_ADDRESS "
+            sudo pm2 stop tower
             sudo rm -rf $ROOT
             mkdir -p $ROOT/$ROOT
             sudo echo '$ENV' > ~/$ROOT/$ROOT/.env
-            echo done
             "
 
       - name: Copy your code to the EC2📔
