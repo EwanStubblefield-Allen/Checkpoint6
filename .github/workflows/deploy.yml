@@ -32,7 +32,7 @@ jobs:
             sudo pm2 stop tower
             sudo rm -rf $ROOT &&
             mkdir -p $ROOT/$ROOT &&
-            echo "${{secrets.ENV}}" >> ~/$ROOT/$ROOT/.env'
+            echo "${{secrets.ENV}}" > ~/$ROOT/$ROOT/.env'
 
       - name: Copy your code to the EC2📔
         run: |
