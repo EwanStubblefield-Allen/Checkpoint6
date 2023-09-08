@@ -38,7 +38,7 @@ export function RegisterControllers(router) {
       const routePrefix = process.env.ROUTE_PREFIX || ''
       const controller = new ControllerClass()
       if (controller instanceof BaseController) {
-        router.use('/tower' + controller.mount, controller.router)
+        router.use(routePrefix + controller.mount, controller.router)
       }
     } catch (e) {
       logger.error(

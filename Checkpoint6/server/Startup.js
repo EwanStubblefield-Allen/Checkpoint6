@@ -50,7 +50,7 @@ export class Startup {
     RegisterSocketHandlers()
     app.use(router)
 
-    app.use('/tower', express.static(Paths.Public))
+    app.use(routePrefix, express.static(Paths.Public))
 
     Startup.registerErrorHandlers(app)
   }
