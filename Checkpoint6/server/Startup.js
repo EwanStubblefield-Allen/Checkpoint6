@@ -44,13 +44,12 @@ export class Startup {
 
   static ConfigureRoutes(app) {
     const router = express.Router()
-    const routePrefix = process.env.ROUTE_PREFIX || ''
     app.use(AccountValidator)
     RegisterControllers(router)
     RegisterSocketHandlers()
     app.use(router)
 
-    app.use(routePrefix, express.static(Paths.Public))
+    app.use('', express.static(Paths.Public))
 
     Startup.registerErrorHandlers(app)
   }
