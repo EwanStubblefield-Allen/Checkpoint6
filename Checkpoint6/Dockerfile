@@ -20,4 +20,4 @@ RUN npm install
 EXPOSE 3000
 
 # Set the entry point for the container
-ENTRYPOINT ["node", "index.js"]
+ENTRYPOINT ["npm", "start"]
