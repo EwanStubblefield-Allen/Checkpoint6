@@ -1,0 +1,7 @@
+version: '3'
+services:
+  web:
+    image: ewanstubblefieldallen/tower:latest
+    ports:
+      - "3000:80"
+    restart: unless-stopped
