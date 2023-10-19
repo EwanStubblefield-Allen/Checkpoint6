@@ -1,5 +1,5 @@
 # Use the node base image as the base image
-FROM node:18-alpine as build-env
+FROM node:18-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -14,7 +14,7 @@ RUN npm i
 # RUN npm run build
 
 # Copy the published output from the build-env to the new container
-COPY --from=build-env /app/out .
+# COPY --from=build-env /app/out .
 
 # Expose the port your application listens on
 EXPOSE 3000

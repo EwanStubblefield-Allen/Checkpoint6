@@ -12,7 +12,6 @@ env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   ENV: ${{ secrets.ENV }}
-  CONFIG: ${{ secrets.CONFIG }}
   DOCKER_IMAGE: tower:latest
   ROOT: Checkpoint6
 
