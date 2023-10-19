@@ -1,5 +1,5 @@
 # Use the node base image as the base image
-FROM node:18
+FROM node:latest
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . ./
 
 # Restore the .NET dependencies
-RUN npm i
+RUN npm install
 
 # Build the application
 # RUN npm run build
