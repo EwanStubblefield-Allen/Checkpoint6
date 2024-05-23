@@ -10,14 +10,13 @@ env:
   EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
   EC2_PEM_KEY: ${{ secrets.EC2_PEM_KEY }}
   ENV: ${{ secrets.ENV }}
-  ROOT: "Checkpoint6"
+  ROOT: 'Checkpoint6'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -42,4 +41,4 @@ jobs:
         run: |
           # Add any commands required to restart your application on the EC2 instance
           # Example: 
-          sudo ssh -i ~/.ssh/id_rsa.pem $EC2_USERNAME@$EC2_IP_ADDRESS "cd $ROOT && npm run build && sudo pm2 restart tower"
+          sudo ssh -i ~/.ssh/id_rsa.pem $EC2_USERNAME@$EC2_IP_ADDRESS "cd $ROOT && pnpm run build && sudo pm2 restart tower"
