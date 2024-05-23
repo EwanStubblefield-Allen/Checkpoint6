@@ -2,8 +2,8 @@
   "name": "checkpoint6",
   "version": "1.0.0",
   "scripts": {
-    "build": "pnpm run setup:server",
-    "setup:app": "npm run setup:server && pnpm run setup:client",
+    "build": "npm run setup:server",
+    "setup:app": "npm run setup:server && npm run setup:client",
     "setup:client": "cd Checkpoint6.client && pnpm i",
     "setup:server": "cd Checkpoint6 && pnpm i",
     "start": "node Checkpoint6/index.js"
