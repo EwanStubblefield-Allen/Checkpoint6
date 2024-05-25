@@ -3,14 +3,13 @@ import { json } from 'body-parser'
 import cors from 'cors'
 import express from 'express'
 import helmet from 'helmet'
-import { Paths, RegisterControllers, RegisterSocketHandlers } from '../Setup'
-import { AccountValidator } from './utils/AccountValidator'
+import { Paths, RegisterControllers, RegisterSocketHandlers, UseStaticPages } from '../Setup'
 import { logger } from './utils/Logger'
 
 export class Startup {
   static ConfigureGlobalMiddleware(app) {
     // NOTE Configure and Register Middleware
-    Startup.configureCors(app)
+    app.use(cors(Startup.corsOptions))
     app.use(
       helmet({
         contentSecurityPolicy: false,
@@ -19,16 +18,24 @@ export class Startup {
       })
     )
     app.use(json({ limit: '50mb' }))
-
-    // NOTE Configures auth0 middleware that is used throughout controllers
-    Auth0Provider.configure({
-      domain: process.env.AUTH_DOMAIN || '',
-      clientId: process.env.AUTH_CLIENT_ID || '',
-      audience: process.env.AUTH_AUDIENCE || ''
-    })
+    Startup.UseAuth()
   }
 
-  static configureCors(app) {
+  static UseAuth() {
+    // NOTE Configures auth0 middleware that is used throughout controllers
+    const AUTH_CONFIG = {
+      domain: process.env.AUTH_DOMAIN,
+      clientId: process.env.AUTH_CLIENT_ID,
+      audience: process.env.AUTH_AUDIENCE
+    }
+    const { domain, clientId, audience } = AUTH_CONFIG
+    if (domain && clientId && audience) {
+      return Auth0Provider.configure(AUTH_CONFIG)
+    }
+    logger.warn('Auth not available, config variables were not set')
+  }
+
+  static get corsOptions() {
     const allowedDomains = []
     const corsOptions = {
       origin(origin, callback) {
@@ -40,19 +47,15 @@ export class Startup {
       },
       credentials: true
     }
-
-    app.use(cors(corsOptions))
+    return corsOptions
   }
 
   static ConfigureRoutes(app) {
     const router = express.Router()
-    app.use(AccountValidator)
     RegisterControllers(router)
     RegisterSocketHandlers()
     app.use(router)
-
-    app.use('', express.static(Paths.Public))
-
+    UseStaticPages(app)
     Startup.registerErrorHandlers(app)
   }
 
