@@ -7,8 +7,7 @@ export class TestHandler extends SocketHandler {
    */
   constructor(io, socket) {
     super(io, socket)
-    this
-      .on('SOCKET_TEST', this.testEvent)
+    this.on('SOCKET_TEST', this.testEvent)
   }
 
   async testEvent(payload) {

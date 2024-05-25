@@ -1,15 +1,21 @@
-import { dbContext } from "../db/DbContext.js"
-import { BadRequest, Forbidden } from "../utils/Errors.js"
-import { ticketsService } from "./TicketsService.js"
+import { dbContext } from '../db/DbContext.js'
+import { BadRequest, Forbidden } from '../utils/Errors.js'
+import { ticketsService } from './TicketsService.js'
 
 class TowerEventsService {
   async getEvents() {
-    const events = await dbContext.TowerEvents.find().populate('creator ticketCount', 'name picture')
+    const events = await dbContext.TowerEvents.find().populate(
+      'creator ticketCount',
+      'name picture'
+    )
     return events
   }
 
   async getEventById(eventId) {
-    const event = await dbContext.TowerEvents.findById(eventId).populate('creator ticketCount', 'name picture')
+    const event = await dbContext.TowerEvents.findById(eventId).populate(
+      'creator ticketCount',
+      'name picture'
+    )
     if (!event) {
       throw new BadRequest(`[THE EVENT DOES NOT EXIST WITH THE ID: ${eventId}]`)
     }

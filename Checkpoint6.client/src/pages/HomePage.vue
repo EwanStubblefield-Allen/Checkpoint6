@@ -17,7 +17,7 @@
     </section>
 
     <section class="row">
-      <div v-for="e in  towerEvents " :key="e.id" class="col-12 col-md-3 py-2 px-3">
+      <div v-for="e in towerEvents " :key="e.id" class="col-12 col-md-3 py-2 px-3">
         <router-link :to="{ name: 'EventDetails', params: { eventId: e.id } }">
           <TowerEventCard :eventProp="e" />
         </router-link>
@@ -64,28 +64,28 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  img {
-    width: 100%;
-    height: 30vh;
-    object-fit: cover;
-    object-position: top;
-  }
+img {
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+  object-position: top;
+}
 
-  .filter {
-    border-radius: 3px;
-    background: var(--t-2-dark-lighten, #474C61);
-    box-shadow: 0px 4px 4px 0px #00000040;
-  }
+.filter {
+  border-radius: 3px;
+  background: var(--t-2-dark-lighten, #474C61);
+  box-shadow: 0px 4px 4px 0px #00000040;
+}
 
-  .filter-btn {
-    height: 100%;
-    width: 100%;
-  }
+.filter-btn {
+  height: 100%;
+  width: 100%;
+}
 
-  .selected {
-    color: var(--bs-success);
-    border-bottom: 4px solid var(--bs-success);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
+.selected {
+  color: var(--bs-success);
+  border-bottom: 4px solid var(--bs-success);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
 </style>

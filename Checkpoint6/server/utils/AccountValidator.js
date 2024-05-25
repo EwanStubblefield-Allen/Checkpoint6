@@ -9,7 +9,9 @@ export async function AccountValidator(req, res, next) {
     }
     const userInfo = await Auth0Provider.getUserInfoFromBearerToken(bearer)
     if (!userInfo.id) {
-      throw new Error('[MISSING_AUTH0_RULE] Unable to create account: Missing Extend UserInfo rule in Auth0 account')
+      throw new Error(
+        '[MISSING_AUTH0_RULE] Unable to create account: Missing Extend UserInfo rule in Auth0 account'
+      )
     }
     req.account = await accountService.getAccount(userInfo)
     next()

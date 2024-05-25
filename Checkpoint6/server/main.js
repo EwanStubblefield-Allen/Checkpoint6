@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000
 
 if (process.env.NODE_ENV == 'dev') {
   // @ts-ignore
-  process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 1;
+  process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 1
 }
 
 const httpServer = createServer(app)

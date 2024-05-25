@@ -53,22 +53,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  img {
-    height: 10vh;
-    width: 10vh;
-    border-radius: 50%;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  }
+img {
+  height: 10vh;
+  width: 10vh;
+  border-radius: 50%;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
 
-  .comment-bg {
-    width: 100%;
-    color: black;
-    border-radius: 3px;
-    background: #E2F9FF;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  }
+.comment-bg {
+  width: 100%;
+  color: black;
+  border-radius: 3px;
+  background: #E2F9FF;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
 
-  .attending {
-    color: #56C7FB;
-  }
+.attending {
+  color: #56C7FB;
+}
 </style>

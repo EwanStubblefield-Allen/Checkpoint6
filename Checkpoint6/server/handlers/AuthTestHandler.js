@@ -7,8 +7,7 @@ export class AuthTestHandler extends SocketHandler {
    */
   constructor(io, socket) {
     super(io, socket, true)
-    this
-      .on('AUTH_TEST', this.testAuthEvent)
+    this.on('AUTH_TEST', this.testAuthEvent)
   }
 
   async testAuthEvent(payload) {

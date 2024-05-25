@@ -10,9 +10,7 @@ export class AuthHandler extends SocketHandler {
    */
   constructor(io, socket) {
     super(io, socket)
-    this
-      .on('authenticate', this.onAuthenticate)
-      .on('disconnect', this.onDisconnect)
+    this.on('authenticate', this.onAuthenticate).on('disconnect', this.onDisconnect)
   }
 
   async onAuthenticate(bearerToken) {

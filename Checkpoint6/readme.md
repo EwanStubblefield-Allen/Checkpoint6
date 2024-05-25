@@ -41,94 +41,95 @@ In your auth0 dashboard be sure to enable RBAC or add in this custom rule
 ```javascript
 //AUTH0 RULE
 /**
- * Add common namespaced properties to userInfo, 
+ * Add common namespaced properties to userInfo,
  * note auth0 will strip any non namespaced properties
  */
 function extendUserInfo(user, context, callback) {
-    const namespace = 'https://YOURDOMAINHERE.auth0.com';
-    context.idToken = context.idToken || {};
-    context.authorization = context.authorization || {};
-    user.app_metadata = user.app_metadata || { };
-    user.app_metadata.new = user.app_metadata.id ? false : true;
-    user.app_metadata.id = user.app_metadata.id || generateId();
+  const namespace = 'https://YOURDOMAINHERE.auth0.com'
+  context.idToken = context.idToken || {}
+  context.authorization = context.authorization || {}
+  user.app_metadata = user.app_metadata || {}
+  user.app_metadata.new = user.app_metadata.id ? false : true
+  user.app_metadata.id = user.app_metadata.id || generateId()
 
-    for (const key in user.app_metadata) {
-        context.idToken[`${namespace}/${key}`] = user.app_metadata[key];
-    }
-    context.idToken[`${namespace}/roles`] = context.authorization.roles;
-    context.idToken[`${namespace}/permissions`] = context.authorization.permissions;
-    context.idToken[`${namespace}/user_metadata`] = user.user_metadata;
-    
-    if(!user.app_metadata.new){
-        return callback(null, user, context);
-    }
-    delete user.app_metadata.new;
-    auth0.users.updateAppMetadata(user.user_id, user.app_metadata)
-        .then(function () {
-            callback(null, user, context);
-        })
-        .catch(function (err) {
-            callback(err);
-        });  
-  
+  for (const key in user.app_metadata) {
+    context.idToken[`${namespace}/${key}`] = user.app_metadata[key]
+  }
+  context.idToken[`${namespace}/roles`] = context.authorization.roles
+  context.idToken[`${namespace}/permissions`] = context.authorization.permissions
+  context.idToken[`${namespace}/user_metadata`] = user.user_metadata
+
+  if (!user.app_metadata.new) {
+    return callback(null, user, context)
+  }
+  delete user.app_metadata.new
+  auth0.users
+    .updateAppMetadata(user.user_id, user.app_metadata)
+    .then(function () {
+      callback(null, user, context)
+    })
+    .catch(function (err) {
+      callback(err)
+    })
+
   function generateId() {
-    let timestamp = (new Date().getTime() / 1000 | 0).toString(16);
-    return timestamp + 'xxxxxxxxxxxxxxxx'.replace(/[x]/g, () => (
-      Math.random() * 16 | 0).toString(16)).toLowerCase();
-	}
+    let timestamp = ((new Date().getTime() / 1000) | 0).toString(16)
+    return (
+      timestamp +
+      'xxxxxxxxxxxxxxxx'
+        .replace(/[x]/g, () => ((Math.random() * 16) | 0).toString(16))
+        .toLowerCase()
+    )
+  }
 }
 ```
 
 Example of how to use and configure auth0Provider, You can configure the auth0Provider anywhere in your application and then import it and use the middleware anywhere
 
 ```javascript
-import { auth0Provider } from "@bcw/auth0-server";
+import { auth0Provider } from '@bcw/auth0-server'
 
 auth0Provider.configure({
   domain: process.env.AUTH_DOMAIN,
   clientId: process.env.AUTH_CLIENT_ID,
   audience: process.env.AUTH_AUDIENCE
-});
+})
 
 // validates a request has a Bearer auth token in req.headers.authentication
-app.use("/authenticated", auth0Provider.isAuthenticated, (req, res, next) => {
-  res.send({ userIdentity: req.user });
-});
+app.use('/authenticated', auth0Provider.isAuthenticated, (req, res, next) => {
+  res.send({ userIdentity: req.user })
+})
 
 // validates the request token and extracts the userInfo saved in auth0
-app.use("/user-profile", getAuthorizedUserInfo, (req, res, next) => {
-  res.send({ userIdentity: req.user, userInfo: req.userInfo });
-});
+app.use('/user-profile', getAuthorizedUserInfo, (req, res, next) => {
+  res.send({ userIdentity: req.user, userInfo: req.userInfo })
+})
 
 // validates the request token, extracts the userIdentity and userInfo
 // fails if role is not found in the token
 // Enable RBAC or Extended Rules
-app.use(
-  "/admins-only",
-  auth0Provider.hasRoles("admin"),
-  (req, res, next) => {}
-);
+app.use('/admins-only', auth0Provider.hasRoles('admin'), (req, res, next) => {})
 
 // validates the request token, extracts the userIdentity and userInfo
 // fails if any permission is not found in the token
 // Enable RBAC or Extended Rules
 app.use(
-  "/messages",
-  auth0Provider.hasPermissions(["read:messages", "write:messages"]),
+  '/messages',
+  auth0Provider.hasPermissions(['read:messages', 'write:messages']),
   (req, res, next) => {}
-);
+)
 
 //recommended default error handler
 app.use((error, req, res, next) => {
   if (error.status == 500 || !error.status) {
-    error.message = console.error(error); // should write to external
+    error.message = console.error(error) // should write to external
   }
   error = error || {
     status: 400,
-    message: "An unexpected error occured please try again later"
-  };
-  res.status(error.status).send({ ...error, url: req.url });
-});
+    message: 'An unexpected error occured please try again later'
+  }
+  res.status(error.status).send({ ...error, url: req.url })
+})
 ```
 
 Using chained methods with express.Router()
@@ -156,6 +157,4 @@ The content under the CodeWorks®, LLC Organization and all of the individual re
 
 © CodeWorks® LLC, 2021. Unauthorized use and/or duplication of this material without express and written permission from CodeWorks, LLC is strictly prohibited.
 
-
 <img src="https://bcw.blob.core.windows.net/public/img/7815839041305055" width="125">
-

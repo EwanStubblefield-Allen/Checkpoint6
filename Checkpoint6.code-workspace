@@ -1,4 +1,3 @@
-
 {
   "folders": [
     {
@@ -33,7 +32,7 @@
     "eslint.lintTask.enable": true,
     "eslint.codeActionsOnSave.mode": "all",
     "editor.codeActionsOnSave": {
-      "source.fixAll": true
+      "source.fixAll": "explicit"
     }
   }
 }

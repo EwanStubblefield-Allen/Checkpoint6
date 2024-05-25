@@ -1,8 +1,8 @@
-import { AppState } from "../AppState.js"
-import { Attendee } from "../models/Attendee.js"
-import Pop from "../utils/Pop.js"
-import { api } from "./AxiosService.js"
-import { commentsService } from "./CommentsService.js"
+import { AppState } from '../AppState.js'
+import { Attendee } from '../models/Attendee.js'
+import Pop from '../utils/Pop.js'
+import { api } from './AxiosService.js'
+import { commentsService } from './CommentsService.js'
 
 class AttendeesService {
   async getMyAttendings() {

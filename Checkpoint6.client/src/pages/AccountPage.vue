@@ -5,7 +5,7 @@
     </section>
 
     <section class="row">
-      <div v-for="e in  towerEvents " :key="e.id" class="col-12 col-md-3 py-2 px-3">
+      <div v-for="e in towerEvents " :key="e.id" class="col-12 col-md-3 py-2 px-3">
         <router-link :to="{ name: 'EventDetails', params: { eventId: e.id } }">
           <TowerEventCard :eventProp="e" />
         </router-link>
@@ -66,7 +66,7 @@ export default {
 </script>
 
 <style scoped>
-  img {
-    max-width: 100px;
-  }
+img {
+  max-width: 100px;
+}
 </style>

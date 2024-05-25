@@ -51,30 +51,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .img-bg {
-    height: 100%;
-    border-radius: 3px;
-    background-image: v-bind(backgroundImg);
-    background-position: center;
-    background-size: cover;
-  }
+.img-bg {
+  height: 100%;
+  border-radius: 3px;
+  background-image: v-bind(backgroundImg);
+  background-position: center;
+  background-size: cover;
+}
 
-  .card-text {
-    height: fit-content;
-    width: 100%;
-    border-radius: 3px;
-    border: 1px solid rgba(86, 199, 251, 0.20);
-    background: rgba(204, 243, 253, 0.20);
-    backdrop-filter: blur(10px);
-    text-shadow: 0px 0px 4px #00000080;
-  }
+.card-text {
+  height: fit-content;
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid rgba(86, 199, 251, 0.20);
+  background: rgba(204, 243, 253, 0.20);
+  backdrop-filter: blur(10px);
+  text-shadow: 0px 0px 4px #00000080;
+}
 
-  .no-ticket {
-    border-radius: 3px;
-    background: #FF5977;
-  }
+.no-ticket {
+  border-radius: 3px;
+  background: #FF5977;
+}
 
-  .card-height {
-    height: 40vh;
-  }
+.card-height {
+  height: 40vh;
+}
 </style>

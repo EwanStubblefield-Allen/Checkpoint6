@@ -48,27 +48,27 @@ export default {
 </script>
 
 <style scoped>
-  a:hover {
-    text-decoration: none;
-  }
+a:hover {
+  text-decoration: none;
+}
 
-  .nav-bg {
-    background: linear-gradient(270deg, #474C61 0%, rgba(71, 76, 97, 0.00) 100%);
-  }
+.nav-bg {
+  background: linear-gradient(270deg, #474C61 0%, rgba(71, 76, 97, 0.00) 100%);
+}
 
-  .nav-link {
-    text-transform: uppercase;
-  }
+.nav-link {
+  text-transform: uppercase;
+}
 
-  .navbar-nav .router-link-exact-active {
-    border-bottom: 2px solid var(--bs-success);
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
+.navbar-nav .router-link-exact-active {
+  border-bottom: 2px solid var(--bs-success);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
 
-  @media screen and (min-width: 768px) {
-    nav {
-      height: 64px;
-    }
+@media screen and (min-width: 768px) {
+  nav {
+    height: 64px;
   }
+}
 </style>

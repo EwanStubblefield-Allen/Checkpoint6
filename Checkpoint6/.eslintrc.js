@@ -9,9 +9,7 @@ module.exports = {
     node: true
   },
   parser: 'babel-eslint',
-  extends: [
-    'standard'
-  ],
+  extends: ['standard'],
   parserOptions: {
     ecmaVersion: 2020,
     requireConfigFile: false

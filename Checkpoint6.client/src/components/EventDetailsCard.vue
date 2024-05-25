@@ -141,38 +141,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  img {
-    height: 100%;
-    object-position: center;
-    object-fit: cover;
-  }
+img {
+  height: 100%;
+  object-position: center;
+  object-fit: cover;
+}
 
-  .img-bg {
-    border-radius: 3px;
-    background: v-bind(backgroundImg), lightgray 50% / cover no-repeat;
-    background-position: center;
-    background-size: cover;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  }
+.img-bg {
+  border-radius: 3px;
+  background: v-bind(backgroundImg), lightgray 50% / cover no-repeat;
+  background-position: center;
+  background-size: cover;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
 
-  .text-bg {
-    border-radius: 3px;
-    border: 1px solid #ccf3fd33;
-    background: #246d8e99;
-    backdrop-filter: blur(15px);
-    text-shadow: 0px 0px 4px #00000080;
-  }
+.text-bg {
+  border-radius: 3px;
+  border: 1px solid #ccf3fd33;
+  background: #246d8e99;
+  backdrop-filter: blur(15px);
+  text-shadow: 0px 0px 4px #00000080;
+}
 
-  .info {
-    height: 1rem;
-  }
+.info {
+  height: 1rem;
+}
 
-  .ticket-count {
-    color: #FF5977
-  }
+.ticket-count {
+  color: #FF5977
+}
 
-  .attend-btn {
-    border-radius: 3px;
-    background: #FFD464;
-  }
+.attend-btn {
+  border-radius: 3px;
+  background: #FFD464;
+}
 </style>

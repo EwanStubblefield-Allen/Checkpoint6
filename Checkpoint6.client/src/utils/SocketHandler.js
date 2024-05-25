@@ -18,20 +18,21 @@ export class SocketHandler {
    * @param {String} url
    */
   constructor(requiresAuth = false, url = baseURL) {
-    if (!useSockets) { return }
+    if (!useSockets) {
+      return
+    }
     this.socket = io(url || baseURL)
     this.requiresAuth = requiresAuth
     this.queue = []
     this.authenticated = false
-    this
-      .on(SOCKET_EVENTS.connected, this.onConnected)
+    this.on(SOCKET_EVENTS.connected, this.onConnected)
       .on(SOCKET_EVENTS.authenticated, this.onAuthenticated)
       .on(SOCKET_EVENTS.error, this.onError)
   }
 
   on(event, fn) {
-     const ctx = this
-    this.socket?.on(event, function () {
+    const ctx = this
+    this.socket?.on(event, () => {
       try {
         fn.call(ctx, ...arguments)
       } catch (error) {
@@ -80,6 +81,7 @@ export class SocketHandler {
     if (this.requiresAuth && !this.authenticated) {
       return this.enqueue(action, payload)
     }
+
     if (!this.connected) {
       return this.enqueue(action, payload)
     }

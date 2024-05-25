@@ -51,20 +51,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  img {
-    height: 30vh;
-    width: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
+img {
+  height: 30vh;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 
-  .circle-position {
-    height: 20vh;
-    width: 20vh;
-    border-radius: 50%;
-    position: absolute;
-    top: 5vh;
-    right: -10vh;
-    background: #2A2D3A;
-  }
+.circle-position {
+  height: 20vh;
+  width: 20vh;
+  border-radius: 50%;
+  position: absolute;
+  top: 5vh;
+  right: -10vh;
+  background: #2A2D3A;
+}
 </style>

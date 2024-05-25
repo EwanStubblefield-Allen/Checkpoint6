@@ -121,13 +121,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  img {
-    height: 5vh;
-    width: 5vh;
-    border-radius: 50%;
-  }
+img {
+  height: 5vh;
+  width: 5vh;
+  border-radius: 50%;
+}
 
-  .title {
-    color: #7981A6;
-  }
+.title {
+  color: #7981A6;
+}
 </style>

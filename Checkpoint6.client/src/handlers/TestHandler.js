@@ -1,17 +1,14 @@
-import { SocketHandler } from "../utils/SocketHandler.js";
+import { SocketHandler } from '../utils/SocketHandler.js'
 
 class TestHandler extends SocketHandler {
-
   constructor() {
     super()
-    this
-      .on('IS_TESTED', this.onTest)
+    this.on('IS_TESTED', this.onTest)
   }
 
-  onTest(payload){
+  onTest(payload) {
     console.log('Recieved IS_TESTED', payload)
   }
-
 }
 
 export const testHandler = new TestHandler()

@@ -1,20 +1,23 @@
-import { Schema } from "mongoose";
+import { Schema } from 'mongoose'
 
-export const TicketSchema = new Schema({
-  accountId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'Account'
+export const TicketSchema = new Schema(
+  {
+    accountId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'Account'
+    },
+    eventId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'TowerEvent'
+    }
   },
-  eventId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'TowerEvent'
+  {
+    timestamps: true,
+    toJSON: { virtuals: true }
   }
-}, {
-  timestamps: true,
-  toJSON: { virtuals: true }
-})
+)
 
 TicketSchema.virtual('profile', {
   localField: 'accountId',

@@ -4,9 +4,7 @@ import BaseController from '../utils/BaseController'
 export class ProfilesController extends BaseController {
   constructor() {
     super('api/profiles')
-    this.router
-      .get('', this.getProfiles)
-      .get('/:id', this.getProfile)
+    this.router.get('', this.getProfiles).get('/:id', this.getProfile)
   }
 
   async getProfiles(req, res, next) {

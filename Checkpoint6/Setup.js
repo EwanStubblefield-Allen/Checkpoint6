@@ -1,11 +1,17 @@
+import express from 'express'
 import fs from 'fs'
 import path from 'path'
-import BaseController from './server/utils/BaseController'
-import { logger } from './server/utils/Logger'
+import BaseController from './server/utils/BaseController.js'
+import { logger } from './server/utils/Logger.js'
+
+let ROUTE_PREFIX = process.env.ROUTE_PREFIX || ''
+if (ROUTE_PREFIX && ROUTE_PREFIX[0] != '/') {
+  ROUTE_PREFIX = '/' + ROUTE_PREFIX
+}
 
 export class Paths {
   static get Public() {
-    return path.join(__dirname, 'client')
+    return path.join(__dirname, 'www')
   }
 
   static get Server() {
@@ -37,7 +43,7 @@ export function RegisterControllers(router) {
       }
       const controller = new ControllerClass()
       if (controller instanceof BaseController) {
-        router.use(controller.mount, controller.router)
+        router.use(ROUTE_PREFIX + controller.mount, controller.router)
       }
     } catch (e) {
       logger.error(
@@ -49,14 +55,20 @@ export function RegisterControllers(router) {
   }
 }
 
+export function UseStaticPages(app) {
+  app.use(ROUTE_PREFIX, express.static(Paths.Public))
+}
+
 const HANDLERS = []
 
 export async function RegisterSocketHandlers() {
   const directory = Paths.Handlers
   const handlers = fs.readdirSync(directory)
-  handlers.forEach(async (handlerName) => {
+  handlers.forEach(async handlerName => {
     try {
-      if (!handlerName.endsWith('.js')) { return }
+      if (!handlerName.endsWith('.js')) {
+        return
+      }
       const fileHandler = await import(directory + '/' + handlerName)
       let HandlerClass = fileHandler[handlerName.slice(0, -3)]
       if (!HandlerClass) {

@@ -1,6 +1,6 @@
-import { AppState } from "../AppState.js"
-import { Comment } from "../models/Comment.js"
-import { api } from "./AxiosService.js"
+import { AppState } from '../AppState.js'
+import { Comment } from '../models/Comment.js'
+import { api } from './AxiosService.js'
 
 class CommentsService {
   async getCommentsByEventId(eventId) {
@@ -21,7 +21,7 @@ class CommentsService {
   }
 
   removeAllCommentAttendance() {
-    AppState.comments.map(c => c.isAttending = false)
+    AppState.comments.map(c => (c.isAttending = false))
   }
 
   checkAttendance(commentData) {

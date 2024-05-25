@@ -16,7 +16,7 @@ export class SocketHandler {
   }
 
   on(event, fn) {
-    this.socket.on(event, (payload) => {
+    this.socket.on(event, payload => {
       try {
         if (!this.requiresAuth) {
           return fn.call(this, payload)

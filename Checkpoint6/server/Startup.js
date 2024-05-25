@@ -11,11 +11,13 @@ export class Startup {
   static ConfigureGlobalMiddleware(app) {
     // NOTE Configure and Register Middleware
     Startup.configureCors(app)
-    app.use(helmet({
-      contentSecurityPolicy: false,
-      crossOriginEmbedderPolicy: false,
-      crossOriginResourcePolicy: { policy: 'cross-origin' }
-    }))
+    app.use(
+      helmet({
+        contentSecurityPolicy: false,
+        crossOriginEmbedderPolicy: false,
+        crossOriginResourcePolicy: { policy: 'cross-origin' }
+      })
+    )
     app.use(json({ limit: '50mb' }))
 
     // NOTE Configures auth0 middleware that is used throughout controllers
@@ -77,7 +79,9 @@ export class Startup {
       if (error.status === 500) {
         logger.error(error)
       }
-      res.status(error.status).send({ error: { message: error.toString(), status: error.status }, url: req.url })
+      res
+        .status(error.status)
+        .send({ error: { message: error.toString(), status: error.status }, url: req.url })
     })
   }
 }

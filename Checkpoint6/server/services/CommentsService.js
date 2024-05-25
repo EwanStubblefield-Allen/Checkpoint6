@@ -1,7 +1,6 @@
-import { dbContext } from "../db/DbContext.js"
-import { BadRequest, Forbidden } from "../utils/Errors.js"
-import { ticketsService } from "./TicketsService.js"
-import { towerEventsService } from "./TowerEventsService.js"
+import { dbContext } from '../db/DbContext.js'
+import { BadRequest, Forbidden } from '../utils/Errors.js'
+import { towerEventsService } from './TowerEventsService.js'
 
 class CommentsService {
   async getCommentById(commentId) {
@@ -13,7 +12,10 @@ class CommentsService {
   }
 
   async getCommentsByEventId(eventId) {
-    const comment = await dbContext.Comments.find({ eventId: eventId }).populate('creator', 'name picture')
+    const comment = await dbContext.Comments.find({ eventId: eventId }).populate(
+      'creator',
+      'name picture'
+    )
     return comment
   }
 
@@ -32,7 +34,7 @@ class CommentsService {
     if (foundComment.creatorId != userId) {
       throw new Forbidden(`[YOU CANNOT DELETE THIS COMMENT]`)
     }
-    await foundComment.remove()
+    await foundComment.deleteOne()
     return foundComment
   }
 }

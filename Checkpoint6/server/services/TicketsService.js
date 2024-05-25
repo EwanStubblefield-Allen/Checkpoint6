@@ -1,10 +1,12 @@
-import { dbContext } from "../db/DbContext.js"
-import { BadRequest, Forbidden } from "../utils/Errors.js"
-import { towerEventsService } from "./TowerEventsService.js"
+import { dbContext } from '../db/DbContext.js'
+import { BadRequest, Forbidden } from '../utils/Errors.js'
+import { towerEventsService } from './TowerEventsService.js'
 
 class TicketsService {
   async getTicketById(ticketId) {
-    const ticket = await dbContext.Tickets.findById(ticketId).populate('profile', 'name picture').populate('event')
+    const ticket = await dbContext.Tickets.findById(ticketId)
+      .populate('profile', 'name picture')
+      .populate('event')
     if (!ticket) {
       throw new BadRequest(`[THE TICKET DOES NOT EXIST WITH THE ID: ${ticketId}]`)
     }
@@ -12,12 +14,17 @@ class TicketsService {
   }
 
   async getMyTickets(userId) {
-    const tickets = await dbContext.Tickets.find({ accountId: userId }).populate('profile', 'name picture').populate('event')
+    const tickets = await dbContext.Tickets.find({ accountId: userId })
+      .populate('profile', 'name picture')
+      .populate('event')
     return tickets
   }
 
   async getTicketsByEventId(eventId) {
-    const tickets = await dbContext.Tickets.find({ eventId: eventId }).populate('profile', 'name picture')
+    const tickets = await dbContext.Tickets.find({ eventId: eventId }).populate(
+      'profile',
+      'name picture'
+    )
     return tickets
   }
 
@@ -36,13 +43,13 @@ class TicketsService {
     if (foundTicket.accountId != userId) {
       throw new Forbidden(`[YOU CANNOT DELETE THIS TICKET]`)
     }
-    await foundTicket.remove()
+    await foundTicket.deleteOne()
     return foundTicket
   }
 
   async removeTicketsByEventId(eventId) {
     const foundTickets = await this.getTicketsByEventId(eventId)
-    foundTickets.forEach(async t => await t.remove())
+    foundTickets.forEach(async t => await t.deleteOne())
   }
 }
 

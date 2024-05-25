@@ -18,10 +18,7 @@ export class DbConnection {
       logger.log('[CONNECTION TO DB SUCCESSFUL]')
       return status
     } catch (e) {
-      logger.error(
-        '[MONGOOSE CONNECTION ERROR]:',
-        'Invalid connection string'
-      )
+      logger.error('[MONGOOSE CONNECTION ERROR]:', 'Invalid connection string')
       return status
     }
   }

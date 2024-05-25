@@ -1,8 +1,8 @@
-import { AppState } from "../AppState.js"
-import { TowerEvent } from "../models/TowerEvent.js"
-import { attendeesService } from "./AttendeesService.js"
-import { api } from "./AxiosService.js"
-import { commentsService } from "./CommentsService.js"
+import { AppState } from '../AppState.js'
+import { TowerEvent } from '../models/TowerEvent.js'
+import { attendeesService } from './AttendeesService.js'
+import { api } from './AxiosService.js'
+import { commentsService } from './CommentsService.js'
 
 class TowerEventsService {
   async getEvents() {
