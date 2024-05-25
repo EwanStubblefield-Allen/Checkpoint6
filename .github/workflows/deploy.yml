@@ -39,7 +39,4 @@ jobs:
           sudo GLOBIGNORE='.git' scp -i ~/.ssh/id_rsa.pem -o StrictHostKeyChecking=no -r $GITHUB_WORKSPACE/* $EC2_USERNAME@$EC2_IP_ADDRESS:~/$ROOT
       - name: Restart the EC2 🔃
         run: |
-          sudo ssh -i ~/.ssh/id_rsa.pem -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_IP_ADDRESS '
-            cd $ROOT && npm run build &&
-            sudo pm2 restart tower
-            '
+          sudo ssh -i ~/.ssh/id_rsa.pem -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_IP_ADDRESS "cd $ROOT && npm run build && sudo pm2 restart tower"
