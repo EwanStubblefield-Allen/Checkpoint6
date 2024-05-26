@@ -13,15 +13,6 @@ RUN npm install
 # Copy the application source code to the builder container
 COPY . ./
 
-# Use a smaller base image for the final server image
-FROM node:20-slim
-
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the built files from the builder container to the server's www directory
-COPY --from=builder /app .
-
 # Expose the port the application runs on
 EXPOSE 3000
 
