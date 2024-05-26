@@ -1,0 +1,9 @@
+version: '3'
+services:
+  app:
+    image: ewanstubblefieldallen/tower:latest
+    restart: unless-stopped
+    env_file:
+      - Test-env
+    ports:
+      - '3000:3000'

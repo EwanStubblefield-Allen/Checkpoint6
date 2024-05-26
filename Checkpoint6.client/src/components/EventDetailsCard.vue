@@ -3,7 +3,7 @@
     <div class="img-bg">
       <div class="row text-bg py-2">
         <div class="col-12 d-flex justify-content-end dropdown  py-2 py-md-0">
-          <div v-if="activeEvent.creatorId == account.id && !activeEvent.isCanceled" type="button" class="selectable no-select" data-bs-toggle="dropdown" aria-expanded="false">
+          <div v-if="activeEvent.creatorId == account?.id && !activeEvent.isCanceled" type="button" class="selectable no-select" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="d-flex justify-content-center align-items-center mdi mdi-dots-horizontal info fs-3"></i>
           </div>
 
@@ -62,7 +62,7 @@
               No spots left
               <i class="mdi mdi-human ps-2"></i>
             </button>
-            <button @click="login" v-else-if="!account.id" type="button" class="no-btn btn btn-danger py-2 px-4">
+            <button @click="login" v-else-if="!account?.id" type="button" class="no-btn btn btn-danger py-2 px-4">
               Login to attend
               <i class="mdi mdi-human ps-2"></i>
             </button>
@@ -83,7 +83,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { AppState } from '../AppState.js'
 import { computed } from 'vue'
 import { AuthService } from '../services/AuthService.js'
@@ -91,52 +91,46 @@ import { attendeesService } from '../services/AttendeesService.js'
 import { towerEventsService } from '../services/TowerEventsService.js'
 import Pop from '../utils/Pop.js'
 
-export default {
-  setup() {
-    return {
-      activeEvent: computed(() => AppState.activeEvent),
-      backgroundImg: computed(() => `url(${AppState.activeEvent?.coverImg})`),
-      account: computed(() => AppState.account),
-      isAttending: computed(() => AppState.myAttendings.find(a => a.eventId == AppState.activeEvent.id)),
+const activeEvent = computed(() => AppState.activeEvent)
+const backgroundImg = computed(() => `url(${AppState.activeEvent?.coverImg})`)
+const account = computed(() => AppState.account)
+const isAttending = computed(() => AppState.myAttendings.find(a => a.eventId == AppState.activeEvent.id))
 
-      async login() {
-        AuthService.loginWithPopup()
-      },
+async function login() {
+  AuthService.loginWithPopup()
+}
 
-      async cancelEvent() {
-        try {
-          const isSure = await Pop.confirm(`Are you sure you want to cancel ${this.activeEvent.name}?`)
+async function cancelEvent() {
+  try {
+    const isSure = await Pop.confirm(`Are you sure you want to cancel ${this.activeEvent.name}?`)
 
-          if (!isSure) {
-            return
-          }
-          await towerEventsService.cancelEvent()
-        } catch (error) {
-          Pop.error(error.message, '[CANCELING EVENT]')
-        }
-      },
-
-      async createAttendee() {
-        try {
-          await attendeesService.createAttendee()
-        } catch (error) {
-          Pop.error(error.message, '[CREATING ATTENDEE]')
-        }
-      },
-
-      async removeAttendee() {
-        try {
-          await attendeesService.removeAttendee(this.isAttending.id)
-        } catch (error) {
-          Pop.error(error.message, '[DELETING ATTENDEE]')
-        }
-      },
-
-      isEditing() {
-        AppState.isEditing = true
-      }
+    if (!isSure) {
+      return
     }
+    await towerEventsService.cancelEvent()
+  } catch (error) {
+    Pop.error(error.message, '[CANCELING EVENT]')
   }
+}
+
+async function createAttendee() {
+  try {
+    await attendeesService.createAttendee()
+  } catch (error) {
+    Pop.error(error.message, '[CREATING ATTENDEE]')
+  }
+}
+
+async function removeAttendee() {
+  try {
+    await attendeesService.removeAttendee(this.isAttending.id)
+  } catch (error) {
+    Pop.error(error.message, '[DELETING ATTENDEE]')
+  }
+}
+
+function isEditing() {
+  AppState.isEditing = true
 }
 </script>
 

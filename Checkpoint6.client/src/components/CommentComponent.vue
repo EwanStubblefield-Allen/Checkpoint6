@@ -8,46 +8,37 @@
           <p v-if="commentProp.isAttending" class="attending ps-3">Attending this event</p>
         </div>
 
-        <i @click="removeComment()" v-if="commentProp.creatorId == account.id && !activeEvent.isCanceled" class="mdi mdi-trash-can text-danger selectable fs-5" title="Delete Comment"></i>
+        <i @click="removeComment()" v-if="commentProp.creatorId == account?.id && !activeEvent.isCanceled" class="mdi mdi-trash-can text-danger selectable fs-5" title="Delete Comment"></i>
       </div>
       <p class="text-break">{{ commentProp.body }}</p>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 import { Comment } from '../models/Comment.js'
 import { AppState } from '../AppState.js'
 import { commentsService } from '../services/CommentsService.js'
 import Pop from '../utils/Pop.js'
 
-export default {
-  props: {
-    commentProp: {
-      type: Comment,
-      required: true
+const props = defineProps({
+  commentProp: Comment
+})
+
+const account = computed(() => AppState.account)
+const activeEvent = computed(() => AppState.activeEvent)
+
+async function removeComment() {
+  try {
+    const isSure = await Pop.confirm('Are you sure you want to delete this comment?')
+
+    if (!isSure) {
+      return
     }
-  },
-
-  setup(props) {
-    return {
-      account: computed(() => AppState.account),
-      activeEvent: computed(() => AppState.activeEvent),
-
-      async removeComment() {
-        try {
-          const isSure = await Pop.confirm('Are you sure you want to delete this comment?')
-
-          if (!isSure) {
-            return
-          }
-          await commentsService.removeComment(props.commentProp.id)
-        } catch (error) {
-          Pop.error(error.message, '[DELETING COMMENT]')
-        }
-      }
-    }
+    await commentsService.removeComment(props.commentProp.id)
+  } catch (error) {
+    Pop.error(error.message, '[DELETING COMMENT]')
   }
 }
 </script>

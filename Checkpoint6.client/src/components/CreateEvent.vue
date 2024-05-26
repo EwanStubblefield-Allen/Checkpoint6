@@ -31,34 +31,26 @@
   </form>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import { towerEventsService } from '../services/TowerEventsService.js'
 import { Modal } from 'bootstrap'
 import { useRouter } from 'vue-router'
+import { TowerEvent } from '../models/TowerEvent.js'
 import Pop from '../utils/Pop.js'
 
-export default {
-  setup() {
-    const router = useRouter()
-    const editable = ref({})
-    const options = ['expo', 'convention', 'exhibit', 'sport', 'digital', 'concert']
+const router = useRouter()
+const editable = ref(new TowerEvent())
+const options = ['expo', 'convention', 'exhibit', 'sport', 'digital', 'concert']
 
-    return {
-      editable,
-      options,
-
-      async createEvent() {
-        try {
-          const eventData = await towerEventsService.createEvent(editable.value)
-          editable.value = {}
-          Modal.getOrCreateInstance('#eventForm').hide()
-          router.push({ name: 'EventDetails', params: { eventId: eventData.id } })
-        } catch (error) {
-          Pop.error(error.message, '[CREATING EVENT]')
-        }
-      }
-    }
+async function createEvent() {
+  try {
+    const eventData = await towerEventsService.createEvent(editable.value)
+    editable.value = new TowerEvent()
+    Modal.getOrCreateInstance('#eventForm').hide()
+    router.push({ name: 'EventDetails', params: { eventId: eventData.id } })
+  } catch (error) {
+    Pop.error(error.message, '[CREATING EVENT]')
   }
 }
 </script>

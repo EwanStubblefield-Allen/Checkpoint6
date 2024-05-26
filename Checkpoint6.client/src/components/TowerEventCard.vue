@@ -26,28 +26,13 @@
   </div>
 </template>
 
-<script>
-import { onMounted } from 'vue'
+<script setup>
 import { TowerEvent } from '../models/TowerEvent.js'
 
-export default {
-  props: {
-    eventProp: {
-      type: TowerEvent,
-      required: true
-    }
-  },
-
-  setup(props) {
-    onMounted(() => {
-
-    })
-
-    return {
-      backgroundImg: `url(${props.eventProp.coverImg})`
-    }
-  }
-}
+const props = defineProps({
+  eventProp: TowerEvent
+})
+const backgroundImg = `url(${props.eventProp.coverImg})`
 </script>
 
 <style lang="scss" scoped>

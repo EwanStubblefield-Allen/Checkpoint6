@@ -10,35 +10,28 @@
   </form>
 </template>
 
-<script>
+<script setup>
 import { AppState } from '../AppState.js'
 import { ref, watchEffect } from 'vue'
 import { towerEventsService } from '../services/TowerEventsService.js'
 import { Modal } from 'bootstrap'
+import { TowerEvent } from '../models/TowerEvent.js'
 import Pop from '../utils/Pop.js'
 
-export default {
-  setup() {
-    const editable = ref({})
+const editable = ref(new TowerEvent())
 
-    watchEffect(() => {
-      if (AppState.activeEvent) {
-        editable.value = { ...AppState.activeEvent }
-      }
-    })
+watchEffect(() => {
+  if (AppState.activeEvent) {
+    editable.value = { ...AppState.activeEvent }
+  }
+})
 
-    return {
-      editable,
-
-      async editEvent() {
-        try {
-          await towerEventsService.editEvent(editable.value)
-          Modal.getOrCreateInstance('#editForm').hide()
-        } catch (error) {
-          Pop.error(error.message, '[EDITING EVENT]')
-        }
-      }
-    }
+async function editEvent() {
+  try {
+    await towerEventsService.editEvent(editable.value)
+    Modal.getOrCreateInstance('#editForm').hide()
+  } catch (error) {
+    Pop.error(error.message, '[EDITING EVENT]')
   }
 }
 </script>

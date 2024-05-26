@@ -26,23 +26,13 @@
   </ModalComponent>
 </template>
 
-<script>
-import { computed } from 'vue'
-import { AppState } from './AppState'
+<script setup>
 import Navbar from './components/Navbar.vue'
 import ModalComponent from './components/ModalComponent.vue'
 import CreateEvent from './components/CreateEvent.vue'
 import EditEvent from './components/EditEvent.vue'
-
-export default {
-  setup() {
-    return {
-      appState: computed(() => AppState)
-    }
-  },
-  components: { Navbar, ModalComponent, CreateEvent, EditEvent }
-}
 </script>
+
 <style lang="scss">
 @import "./assets/scss/main.scss";
 

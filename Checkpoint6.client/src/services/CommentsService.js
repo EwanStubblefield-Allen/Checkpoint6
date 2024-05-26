@@ -35,7 +35,7 @@ class CommentsService {
 
   changeAttendeeCommentStatus() {
     AppState.comments.map(c => {
-      if (c.creatorId == AppState.account.id) {
+      if (c.creatorId == AppState.account?.id) {
         c.isAttending = !c.isAttending
       }
     })

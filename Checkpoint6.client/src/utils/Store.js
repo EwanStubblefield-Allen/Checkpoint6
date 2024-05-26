@@ -1,6 +1,6 @@
 import Pop from './Pop.js'
 
-const APP_NAME = 'Checkpoint6.client'
+const APP_NAME = 'Test.client'
 
 export function saveState(key, value) {
   try {

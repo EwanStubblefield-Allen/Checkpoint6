@@ -24,7 +24,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted } from 'vue'
 import { AppState } from '../AppState'
 import { towerEventsService } from '../services/TowerEventsService.js'
@@ -32,36 +32,29 @@ import { attendeesService } from '../services/AttendeesService.js'
 import Pop from '../utils/Pop.js'
 import MyAttendingsCard from '../components/MyAttendingsCard.vue'
 
-export default {
-  setup() {
-    onMounted(() => {
-      getEvents()
-      getMyAttendings()
-    })
+onMounted(() => {
+  getEvents()
+  getMyAttendings()
+})
 
-    async function getEvents() {
-      try {
-        await towerEventsService.getEvents()
-      }
-      catch (error) {
-        Pop.error(error.message, '[GETTING EVENTS]')
-      }
-    }
+const towerEvents = computed(() => AppState.towerEvents.filter(e => e.creatorId == AppState.account?.id))
+const myAttendings = computed(() => AppState.myAttendings)
 
-    async function getMyAttendings() {
-      try {
-        await attendeesService.getMyAttendings()
-      } catch (error) {
-        Pop.error(error.message, '[GETTING MY ATTENDINGS]')
-      }
-    }
+async function getEvents() {
+  try {
+    await towerEventsService.getEvents()
+  }
+  catch (error) {
+    Pop.error(error.message, '[GETTING EVENTS]')
+  }
+}
 
-    return {
-      towerEvents: computed(() => AppState.towerEvents.filter(e => e.creatorId == AppState.account.id)),
-      myAttendings: computed(() => AppState.myAttendings)
-    }
-  },
-  components: { MyAttendingsCard }
+async function getMyAttendings() {
+  try {
+    await attendeesService.getMyAttendings()
+  } catch (error) {
+    Pop.error(error.message, '[GETTING MY ATTENDINGS]')
+  }
 }
 </script>
 

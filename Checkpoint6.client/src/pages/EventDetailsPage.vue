@@ -20,7 +20,7 @@
             Archived conversation
           </div>
 
-          <div v-else-if="account.id">
+          <div v-else-if="account?.id">
             <div class="text-end green">
               Join the conversation
             </div>
@@ -48,75 +48,67 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { useRoute } from 'vue-router'
 import { AppState } from '../AppState.js'
 import { computed, onUnmounted, ref, watchEffect } from 'vue'
 import { towerEventsService } from '../services/TowerEventsService.js'
 import { attendeesService } from '../services/AttendeesService.js'
 import { commentsService } from '../services/CommentsService.js'
+import { Comment } from '../models/Comment.js'
 import EventDetailsCard from '../components/EventDetailsCard.vue'
 import CommentComponent from '../components/CommentComponent.vue'
 import Pop from '../utils/Pop.js'
 
-export default {
-  setup() {
-    const route = useRoute()
-    const editable = ref({})
+const route = useRoute()
+const editable = ref(new Comment())
+const activeEvent = computed(() => AppState.activeEvent)
+const account = computed(() => AppState.account)
+const attendees = computed(() => AppState.attendees)
+const comments = computed(() => AppState.comments)
 
-    watchEffect(() => {
-      getEventById(route.params.eventId)
-      getAttendeesByEventId(route.params.eventId)
-    })
+watchEffect(() => {
+  getEventById(route.params.eventId)
+  getAttendeesByEventId(route.params.eventId)
+})
 
-    onUnmounted(() => {
-      towerEventsService.resetData()
-    })
+onUnmounted(() => {
+  towerEventsService.resetData()
+})
 
-    async function getEventById(eventId) {
-      try {
-        await towerEventsService.getEventById(eventId)
-      }
-      catch (error) {
-        Pop.error(error.message, "[GETTING EVENT BY ID]")
-      }
-    }
+async function getEventById(eventId) {
+  try {
+    await towerEventsService.getEventById(eventId)
+  }
+  catch (error) {
+    Pop.error(error.message, "[GETTING EVENT BY ID]")
+  }
+}
 
-    async function getAttendeesByEventId(eventId) {
-      try {
-        await attendeesService.getAttendeesByEventId(eventId)
-        getCommentsByEventId()
-      } catch (error) {
-        Pop.error(error.message, '[GETTING ATTENDEES BY EVENT ID]')
-      }
-    }
+async function getAttendeesByEventId(eventId) {
+  try {
+    await attendeesService.getAttendeesByEventId(eventId)
+    getCommentsByEventId()
+  } catch (error) {
+    Pop.error(error.message, '[GETTING ATTENDEES BY EVENT ID]')
+  }
+}
 
-    async function getCommentsByEventId() {
-      try {
-        await commentsService.getCommentsByEventId(route.params.eventId)
-      } catch (error) {
-        Pop.error(error.message, '[GETTING COMMENTS BY EVENT ID]')
-      }
-    }
+async function getCommentsByEventId() {
+  try {
+    await commentsService.getCommentsByEventId(route.params.eventId)
+  } catch (error) {
+    Pop.error(error.message, '[GETTING COMMENTS BY EVENT ID]')
+  }
+}
 
-    return {
-      editable,
-      activeEvent: computed(() => AppState.activeEvent),
-      account: computed(() => AppState.account),
-      attendees: computed(() => AppState.attendees),
-      comments: computed(() => AppState.comments),
-
-      async createComment() {
-        try {
-          await commentsService.createComment(editable.value)
-          editable.value = {}
-        } catch (error) {
-          Pop.error(error.message, '[CREATING COMMENT]')
-        }
-      }
-    }
-  },
-  components: { EventDetailsCard, CommentComponent }
+async function createComment() {
+  try {
+    await commentsService.createComment(editable.value)
+    editable.value = new Comment()
+  } catch (error) {
+    Pop.error(error.message, '[CREATING COMMENT]')
+  }
 }
 </script>
 

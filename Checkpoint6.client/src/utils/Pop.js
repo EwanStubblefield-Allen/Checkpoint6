@@ -68,8 +68,7 @@ export default class Pop {
   }
 
   /**
-   * @param {import('axios').AxiosError | Error | String } Error An Error Object.
-   * @param { String } eventTrigger Queryable trigger
+   * @param {String} eventTrigger Queryable trigger
    */
   static error(error, eventTrigger = '') {
     logger.error(eventTrigger, error)
@@ -79,7 +78,6 @@ export default class Pop {
       const errorObj = (response.data ? response.data.error : response.data) || {
         message: 'Invalid Request ' + response.status
       }
-
       if (!errorObj) {
         return this.toast(error.message)
       }

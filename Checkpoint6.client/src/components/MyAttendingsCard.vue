@@ -23,29 +23,20 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { Attendee } from '../models/Attendee.js'
 import { attendeesService } from '../services/AttendeesService.js'
 import Pop from '../utils/Pop.js'
 
-export default {
-  props: {
-    attendingProp: {
-      type: Attendee,
-      required: true
-    }
-  },
+const props = defineProps({
+  attendingProp: Attendee
+})
 
-  setup(props) {
-    return {
-      async removeAttendee() {
-        try {
-          await attendeesService.removeAttendee(props.attendingProp.id)
-        } catch (error) {
-          Pop.error(error.message, '[DELETING ATTENDEE]')
-        }
-      }
-    }
+async function removeAttendee() {
+  try {
+    await attendeesService.removeAttendee(props.attendingProp.id)
+  } catch (error) {
+    Pop.error(error.message, '[DELETING ATTENDEE]')
   }
 }
 </script>
