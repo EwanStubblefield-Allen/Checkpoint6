@@ -1,8 +1,8 @@
 import express from 'express'
 import fs from 'fs'
 import path from 'path'
-import BaseController from './src/utils/BaseController'
-import { logger } from './src/utils/Logger'
+import BaseController from './server/utils/BaseController'
+import { logger } from './server/utils/Logger'
 
 let ROUTE_PREFIX = process.env.ROUTE_PREFIX || ''
 if (ROUTE_PREFIX && ROUTE_PREFIX[0] != '/') {
@@ -11,11 +11,11 @@ if (ROUTE_PREFIX && ROUTE_PREFIX[0] != '/') {
 
 export class Paths {
   static get Public() {
-    return path.join(__dirname, 'www')
+    return path.join(__dirname, 'client')
   }
 
   static get Server() {
-    return path.join(__dirname, 'src')
+    return path.join(__dirname, 'server')
   }
 
   static get Controllers() {

@@ -34,7 +34,7 @@ jobs:
 
       - name: Configure Env 🤐
         run: |
-          echo "$ENV" > ./$ROOT/appsettings.json
+          echo "$ENV" > ./$ROOT/.env
 
       - name: Build and Push Docker Image 🐳
         run: |
