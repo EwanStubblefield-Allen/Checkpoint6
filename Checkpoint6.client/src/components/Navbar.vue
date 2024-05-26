@@ -59,7 +59,7 @@ a:hover {
   border-bottom-right-radius: 0;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 992px) {
   nav {
     height: 64px;
   }

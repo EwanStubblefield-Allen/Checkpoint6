@@ -11,11 +11,11 @@ if (ROUTE_PREFIX && ROUTE_PREFIX[0] != '/') {
 
 export class Paths {
   static get Public() {
-    return path.join(__dirname, 'client')
+    return path.join(__dirname, 'www')
   }
 
   static get Server() {
-    return path.join(__dirname, 'server')
+    return path.join(__dirname, 'src')
   }
 
   static get Controllers() {
