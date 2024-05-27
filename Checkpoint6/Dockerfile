@@ -1,5 +1,5 @@
 # Use a smaller base image for the final server image
-FROM --platform=linux/amd64 node:20-slim
+FROM node:20-slim
 
 # Set the working directory in the builder container
 WORKDIR /app
