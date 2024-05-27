@@ -4,8 +4,8 @@
   "scripts": {
     "build": "pnpm run setup:server",
     "setup:app": "pnpm run setup:server && pnpm run setup:client",
-    "setup:client": "cd Checkpoint6.client && pnpm i",
-    "setup:server": "cd Checkpoint6 && pnpm i",
-    "start": "node Checkpoint6/index.js"
+    "setup:client": "cd client && pnpm i",
+    "setup:server": "cd server && pnpm i",
+    "start": "node server/index.js"
   }
 }

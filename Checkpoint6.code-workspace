@@ -1,11 +1,11 @@
 {
   "folders": [
     {
-      "path": "Checkpoint6.client",
+      "path": "client",
       "name": "client"
     },
     {
-      "path": "Checkpoint6",
+      "path": "server",
       "name": "server"
     }
   ],
